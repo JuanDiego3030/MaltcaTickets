@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/paneles-style.css' %}">
+</head>
+<body>
+
+<!-- Navbar superior -->
+<nav class="navbar navbar-expand-lg navbar-dark w-100" style="z-index: 1100;">
+    <div class="container-fluid">
+        <span class="navbar-brand">Agrotikets</span>
+        <button id="toggleSidebarBtn" class="btn btn-outline-light ms-auto" type="button" aria-label="Mostrar/Ocultar menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+<div class="d-flex" style="min-height: 100vh;">
+        <!-- Sidebar -->
+    <div id="sidebar" class="text-white" style="width: 250px; transition: width 0.3s;">
+        <div class="p-3 text-center border-bottom">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" width="80" class="mb-2">
+            <h5>Dashboard - {{ user.nombre }}</h5>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="{% url 'panel_control' %}" class="list-group-item list-group-item-action bg-dark text-white {% if request.resolver_match.url_name == 'panel_control' %}active{% endif %}">
+                <i class="fas fa-users me-2"></i>Dashboard
+            </a>
+            <a href="{% url 'crear_ticket' %}" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-file-invoice me-2"></i>Crear Ticket
+            </a>
+            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-dark text-white">
+                <i class="fas fa-power-off me-2"></i>Cerrar Sesión
+            </a>
+        </div>
+    </div>
+    <!-- Contenido principal -->
+    <main class="flex-grow-1 d-flex flex-column align-items-stretch" id="mainContent" style="transition: margin-left 0.3s; min-width:0;">
+        <div class="container-fluid py-4 px-2 px-md-4">
+        <form class="row g-3 mb-4" method="get" action="{% url 'exportar_reporte_pdf' %}" target="_blank">
+            <div class="col-auto">
+                <label for="fecha_inicio" class="form-label">Desde:</label>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+            </div>
+            <div class="col-auto">
+                <label for="fecha_fin" class="form-label">Hasta:</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+            </div>
+            <div class="col-auto align-self-end">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+            </div>
+        </form>
+        <h2 class="mb-4">Dashboard de Tickets</h2>
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Tickets</h5>
+                        <h2>{{ total_tickets }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-success mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Usuarios Atendidos</h5>
+                        <h2>{{ usuarios_stats|length }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-info mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Áreas Registradas</h5>
+                        <h2>{{ areas_stats|length }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-bg-warning mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Tipos de Soporte</h5>
+                        <h2>{{ tipos_stats|length }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">Porcentaje de Tickets Atendidos por Soporte</div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Soporte</th>
+                                    <th>Cantidad Atendidos</th>
+                                    <th>% del Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for soporte, cantidad, porcentaje in soportes_stats %}
+                                <tr>
+                                    <td>{{ soporte }}</td>
+                                    <td>{{ cantidad }}</td>
+                                    <td>{{ porcentaje|floatformat:2 }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">Tickets por Usuario</div>
+                    <div class="card-body">
+                        <canvas id="pieUsuarios" height="200"></canvas>
+                        <button class="btn btn-outline-primary btn-sm mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#tablaUsuarios" aria-expanded="false" aria-controls="tablaUsuarios">Ver Tabla</button>
+                        <div class="collapse mt-2" id="tablaUsuarios">
+                            <table class="table table-sm">
+                                <thead><tr><th>Usuario</th><th>Cantidad</th><th>%</th></tr></thead>
+                                <tbody>
+                                    {% for usuario, cantidad, porcentaje in usuarios_stats %}
+                                    <tr>
+                                        <td>{{ usuario }}</td>
+                                        <td>{{ cantidad }}</td>
+                                        <td>{{ porcentaje|floatformat:2 }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">Tickets por Área</div>
+                    <div class="card-body">
+                        <canvas id="pieAreas" height="200"></canvas>
+                        <button class="btn btn-outline-info btn-sm mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#tablaAreas" aria-expanded="false" aria-controls="tablaAreas">Ver Tabla</button>
+                        <div class="collapse mt-2" id="tablaAreas">
+                            <table class="table table-sm">
+                                <thead><tr><th>Área</th><th>Cantidad</th><th>%</th></tr></thead>
+                                <tbody>
+                                    {% for area, cantidad, porcentaje in areas_stats %}
+                                    <tr>
+                                        <td>{{ area }}</td>
+                                        <td>{{ cantidad }}</td>
+                                        <td>{{ porcentaje|floatformat:2 }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">Tickets por Tipo de Soporte</div>
+                    <div class="card-body">
+                        <canvas id="pieTipos" height="200"></canvas>
+                        <button class="btn btn-outline-warning btn-sm mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#tablaTipos" aria-expanded="false" aria-controls="tablaTipos">Ver Tabla</button>
+                        <div class="collapse mt-2" id="tablaTipos">
+                            <table class="table table-sm">
+                                <thead><tr><th>Tipo de Soporte</th><th>Cantidad</th><th>%</th></tr></thead>
+                                <tbody>
+                                    {% for tipo, cantidad, porcentaje in tipos_stats %}
+                                    <tr>
+                                        <td>{{ tipo }}</td>
+                                        <td>{{ cantidad }}</td>
+                                        <td>{{ porcentaje|floatformat:2 }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Sidebar toggle logic
+document.addEventListener('DOMContentLoaded', function() {
+    var sidebar = document.getElementById('sidebar');
+    var toggleBtn = document.getElementById('toggleSidebarBtn');
+    var sidebarVisible = window.innerWidth >= 992; // visible en desktop por defecto
+
+    function setSidebarState(visible) {
+        if (visible) {
+            sidebar.style.display = 'block';
+            sidebarVisible = true;
+        } else {
+            sidebar.style.display = 'none';
+            sidebarVisible = false;
+        }
+    }
+
+    toggleBtn.addEventListener('click', function() {
+        setSidebarState(!sidebarVisible);
+    });
+
+    function handleResize() {
+        if(window.innerWidth < 992) {
+            setSidebarState(false);
+        } else {
+            setSidebarState(true);
+        }
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+</script>
+</body>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Usuarios
+    const usuariosLabels = JSON.parse('{{ usuarios_labels_json|escapejs }}');
+    const usuariosData = JSON.parse('{{ usuarios_porcentajes_json|escapejs }}');
+    new Chart(document.getElementById('pieUsuarios'), {
+        type: 'pie',
+        data: {
+            labels: usuariosLabels,
+            datasets: [{
+                data: usuariosData,
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#0dcaf0', '#6f42c1', '#fd7e14', '#dc3545'],
+            }]
+        },
+        options: {
+            plugins: {legend: {position: 'bottom'}},
+            responsive: true
+        }
+    });
+
+    // Áreas
+    const areasLabels = JSON.parse('{{ areas_labels_json|escapejs }}');
+    const areasData = JSON.parse('{{ areas_porcentajes_json|escapejs }}');
+    new Chart(document.getElementById('pieAreas'), {
+        type: 'pie',
+        data: {
+            labels: areasLabels,
+            datasets: [{
+                data: areasData,
+                backgroundColor: ['#0dcaf0', '#ffc107', '#198754', '#fd7e14', '#6f42c1', '#0d6efd', '#dc3545'],
+            }]
+        },
+        options: {
+            plugins: {legend: {position: 'bottom'}},
+            responsive: true
+        }
+    });
+
+    // Tipos de soporte
+    const tiposLabels = JSON.parse('{{ tipos_labels_json|escapejs }}');
+    const tiposData = JSON.parse('{{ tipos_porcentajes_json|escapejs }}');
+    new Chart(document.getElementById('pieTipos'), {
+        type: 'pie',
+        data: {
+            labels: tiposLabels,
+            datasets: [{
+                data: tiposData,
+                backgroundColor: ['#ffc107', '#0d6efd', '#198754', '#fd7e14', '#6f42c1', '#0dcaf0', '#dc3545'],
+            }]
+        },
+        options: {
+            plugins: {legend: {position: 'bottom'}},
+            responsive: true
+        }
+    });
+</script>
+</body>
+</html>

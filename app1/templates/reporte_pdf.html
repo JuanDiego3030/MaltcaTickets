@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Tickets</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #ffffff; margin-top: 8px; margin-bottom: 8px; }
+        h2 { color: #0d6efd; }
+        h3 { color: #198754; }
+        h4 { color: #fd7e14; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #888; padding: 6px; text-align: center; }
+        th { background: #ffffff; color: #212529; }
+        .section { margin-bottom: 12px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 8px 10px 8px 10px; }
+        .pie-img { max-width: 340px; min-width: 260px; border-radius: 8px; box-shadow: 0 1px 6px #0002; margin-bottom: 10px; }
+        .ceco-pie-wrap { display: flex; flex-wrap: wrap; gap: 32px; justify-content: flex-start; }
+        .ceco-pie-card { background: #e9ecef; border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <div class="ceco-pie-wrap">
+            <div>
+                 <h2>Reporte de Tickets</h2>
+                 <p><strong>Rango de fechas:</strong> {{ fecha_inicio }} - {{ fecha_fin }}</p>
+                 <p><strong>Total de tickets:</strong> {{ total_tickets }}</p> <br>
+                 <h3>Resumen por Área</h3>
+            </div>
+        {% for area in resumen_areas %}
+            <div class="ceco-pie-card">
+                <h4>{{ area.nombre }}</h4>
+                <p><strong>Cantidad:</strong> {{ area.cantidad }}<br>
+                <strong>Porcentaje:</strong> {{ area.porcentaje|floatformat:2 }}%</p>
+                {% if area.grafico %}
+                    <img src="{{ area.grafico }}" class="pie-img">
+                {% endif %}
+                <table style="width:100%; margin-top:10px;">
+                    <thead><tr><th>Tipo de Soporte</th><th>Cantidad</th><th>%</th></thead>
+                    <tbody>
+                    {% for tipo in area.tipos %}
+                        <tr>
+                            <td>{{ tipo.nombre }}</td>
+                            <td>{{ tipo.cantidad }}</td>
+                            <td>{{ tipo.porcentaje|floatformat:2 }}%</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Tickets por Usuario</h3>
+        <table>
+            <thead><tr><th>Usuario</th><th>Cantidad</th><th>%</th></tr></thead>
+            <tbody>
+                {% for usuario, cantidad, porcentaje in usuarios_stats %}
+                <tr>
+                    <td>{{ usuario }}</td>
+                    <td>{{ cantidad }}</td>
+                    <td>{{ porcentaje|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Tickets por Área</h3>
+        <table>
+            <thead><tr><th>Área</th><th>Cantidad</th><th>%</th></tr></thead>
+            <tbody>
+                {% for area, cantidad, porcentaje in areas_stats %}
+                <tr>
+                    <td>{{ area }}</td>
+                    <td>{{ cantidad }}</td>
+                    <td>{{ porcentaje|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Tickets por Tipo de Soporte</h3>
+        <table>
+            <thead><tr><th>Tipo de Soporte</th><th>Cantidad</th><th>%</th></tr></thead>
+            <tbody>
+                {% for tipo, cantidad, porcentaje in tipos_stats %}
+                <tr>
+                    <td>{{ tipo }}</td>
+                    <td>{{ cantidad }}</td>
+                    <td>{{ porcentaje|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Tickets Atendidos por Soporte</h3>
+        <table>
+            <thead><tr><th>Soporte</th><th>Cantidad Atendida</th><th>% Atendido</th></tr></thead>
+            <tbody>
+                {% for soporte, cantidad, porcentaje in soportes_stats %}
+                <tr>
+                    <td>{{ soporte }}</td>
+                    <td>{{ cantidad }}</td>
+                    <td>{{ porcentaje|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

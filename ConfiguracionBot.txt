@@ -1,0 +1,1 @@
+curl -X POST "https://api.telegram.org/bot8173472907:AAHXGiKOv-FYRhDlnmiXWVo6_JaPQeCqt58/setWebhook" -d "url=https://f512ce8c3ff4.ngrok-free.app/bot/"

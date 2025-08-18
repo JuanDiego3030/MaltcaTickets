@@ -1,0 +1,454 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/paneles-style.css' %}">
+</head>
+<body>
+{% if request.GET.abrir_modal_ticket %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = new bootstrap.Modal(document.getElementById('modalCrearTicket'));
+    modal.show();
+});
+</script>
+{% endif %}
+<!-- Navbar superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger w-100" style="z-index: 1100;">
+  <div class="container-fluid">
+    <span class="navbar-brand">Agrotikets</span>
+    <button id="toggleSidebarBtn" class="btn btn-outline-light ms-auto" type="button" aria-label="Mostrar/Ocultar menú">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>
+<div class="d-flex" style="min-height: 100vh;">
+  <!-- Sidebar -->
+  <div id="sidebar" class="text-white" style="width: 250px; transition: width 0.3s; background-color: #004c97;">
+    <div class="p-3 text-center border-bottom">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" width="80" class="mb-2">
+      <h5>Dashboard - {{ user.nombre }}</h5>
+    </div>
+    <div class="list-group list-group-flush">
+      <a href="{% url 'panel_control' %}" class="list-group-item list-group-item-action bg-dark text-white {% if request.resolver_match.url_name == 'panel_control' %}active{% endif %}">
+        <i class="fas fa-users me-2"></i>Dashboard
+      </a>
+      <a href="{% url 'crear_ticket' %}" class="list-group-item list-group-item-action bg-dark text-white">
+        <i class="fas fa-file-invoice me-2"></i>Crear Ticket
+      </a>
+      <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-dark text-white">
+        <i class="fas fa-power-off me-2"></i>Cerrar Sesión
+      </a>
+    </div>
+  </div>
+  <!-- Contenido principal -->
+  <main class="flex-grow-1 d-flex flex-column align-items-stretch" id="mainContent" style="transition: margin-left 0.3s; min-width:0;">
+    <div class="container-fluid py-4 px-2 px-md-4">
+
+        <!-- Filtros y buscador de tickets -->
+        <form method="get" class="row g-2 align-items-end mb-4">
+            <div class="col-md-3">
+                <label for="filtro_usuario" class="form-label mb-0">Usuario</label>
+                <input class="form-control" list="usuarios-list-filtro" name="usuario" id="filtro_usuario" placeholder="Buscar usuario..." value="{{ request.GET.usuario|default:'' }}">
+                <datalist id="usuarios-list-filtro">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.nombre }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="col-md-3">
+                <label for="filtro_tipo" class="form-label mb-0">Tipo de Soporte</label>
+                <select class="form-select" name="tipo_soporte" id="filtro_tipo">
+                    <option value="">Todos</option>
+                    {% for tipo in tipos_soporte %}
+                        <option value="{{ tipo.id }}" {% if request.GET.tipo_soporte == tipo.id|stringformat:'s' %}selected{% endif %}>{{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="filtro_fecha_inicio" class="form-label mb-0">Desde</label>
+                <input type="date" class="form-control" name="fecha_inicio" id="filtro_fecha_inicio" value="{{ request.GET.fecha_inicio|default:'' }}">
+            </div>
+            <div class="col-md-2">
+                <label for="filtro_fecha_fin" class="form-label mb-0">Hasta</label>
+                <input type="date" class="form-control" name="fecha_fin" id="filtro_fecha_fin" value="{{ request.GET.fecha_fin|default:'' }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+        </form>
+
+        <!-- Botones para abrir los modales de registro -->
+        <div class="mb-4 d-flex gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEditarUsuario">Editar Usuario</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearTicket">Crear Ticket</button>
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalCrearArea">Crear Área</button>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCrearTipoSoporte">Crear Tipo de Soporte</button>
+        </div>
+
+        <!-- Modal Crear Ticket -->
+        <!-- Modal Editar Usuario -->
+        <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <label for="usuario_editar" class="form-label">Buscar usuario</label>
+                  <input class="form-control mb-2" list="usuarios-list-editar" name="usuario_editar" id="usuario_editar" placeholder="Buscar por nombre o ID" required>
+                  <datalist id="usuarios-list-editar">
+                    {% for u in usuarios %}
+                      <option value="{{ u.id }}">{{ u.nombre }}</option>
+                    {% endfor %}
+                  </datalist>
+                  <div class="row mt-2">
+                    <div class="col-md-6">
+                      <input type="text" name="editar_nombre" class="form-control mb-2" placeholder="Nuevo nombre">
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" name="editar_cedula" class="form-control mb-2" placeholder="Nueva cédula">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="editar_usuario" class="btn btn-primary">Guardar Cambios</button>
+                  <button type="submit" name="eliminar_usuario" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar Usuario</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="modalCrearTicket" tabindex="-1" aria-labelledby="modalCrearTicketLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <form method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCrearTicketLabel">Registrar Nuevo Ticket</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row mb-3">
+                    <div class="col-md-4">
+                      <label for="tipo_soporte" class="form-label">Tipo de Soporte</label>
+                      <select class="form-select" name="tipo_soporte" id="tipo_soporte" required>
+                        <option value="">Seleccione...</option>
+                        {% for tipo in tipos_soporte %}
+                          <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="usuario" class="form-label">Usuario</label>
+                      <input class="form-control" list="usuarios-list" name="usuario_nombre" id="usuario" required placeholder="Buscar o escribir...">
+                      <datalist id="usuarios-list">
+                        {% for u in usuarios %}
+                          <option data-id="{{ u.id }}" value="{{ u.nombre }}">{{ u.nombre }}</option>
+                        {% endfor %}
+                      </datalist>
+                      <input type="hidden" name="usuario" id="usuario_id_hidden">
+                      <button type="button" class="btn btn-link p-0 mt-1" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario">
+                        <i class="fas fa-user-plus"></i> Crear nuevo usuario
+                      </button>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="area" class="form-label">Área</label>
+                      <select class="form-select" name="area" id="area" required>
+                        <option value="">Seleccione...</option>
+                        {% for a in areas %}
+                          <option value="{{ a.id }}">{{ a.nombre }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="atendido_por" class="form-label">Atendido por</label>
+                      <select class="form-select" name="atendido_por" id="atendido_por" required>
+                        <option value="">Seleccione...</option>
+                        {% for soporte in usuarios_soporte %}
+                          <option value="{{ soporte.id }}">{{ soporte.nombre }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="comentario" class="form-label">Comentario</label>
+                      <textarea class="form-control" name="comentario" id="comentario" rows="2" required></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="crear_ticket" class="btn btn-primary">Registrar Ticket</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Crear Usuario -->
+        <div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalCrearUsuarioLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCrearUsuarioLabel">Registrar Nuevo Usuario</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="text" name="nuevo_nombre" class="form-control" placeholder="Nombre" required>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" name="nuevo_cedula" class="form-control" placeholder="Cédula">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="crear_usuario" class="btn btn-success">Registrar Usuario</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Modal Crear Área -->
+        <div class="modal fade" id="modalCrearArea" tabindex="-1" aria-labelledby="modalCrearAreaLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCrearAreaLabel">Registrar Nueva Área</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="text" name="nuevo_area_nombre" class="form-control" placeholder="Nombre" required>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="crear_area" class="btn btn-info">Registrar Área</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Crear Tipo de Soporte -->
+        <div class="modal fade" id="modalCrearTipoSoporte" tabindex="-1" aria-labelledby="modalCrearTipoSoporteLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalCrearTipoSoporteLabel">Registrar Nuevo Tipo de Soporte</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="text" name="nuevo_tipo_nombre" class="form-control" placeholder="Nombre" required>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="crear_tipo_soporte" class="btn btn-warning">Registrar Tipo de Soporte</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <h2>Tickets Generados</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo de Soporte</th>
+                        <th>Comentario</th>
+                        <th>Usuario</th>
+                        <th>Área</th>
+                        <th>Atendido por</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.id }}</td>
+                        <td>{{ ticket.tipo_soporte.nombre }}</td>
+                        <td>{{ ticket.comentario }}</td>
+                        <td>{{ ticket.usuario.nombre }}</td>
+                        <td>{{ ticket.area.nombre }}</td>
+                        <td>{% if ticket.atendido_por %}{{ ticket.atendido_por.nombre }}{% else %}-{% endif %}</td>
+                        <td>{{ ticket.fecha_creacion|date:'d/m/Y H:i' }}</td>
+                        <td>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton{{ ticket.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acciones
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ ticket.id }}">
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#verModal{{ ticket.id }}">
+                                    <i class="fas fa-eye text-info"></i> Ver
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editarModal{{ ticket.id }}">
+                                    <i class="fas fa-edit text-warning"></i> Editar
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ ticket.id }}">
+                                    <i class="fas fa-trash text-danger"></i> Eliminar
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Modal Ver -->
+                    <!-- Modal Editar Ticket -->
+                    <div class="modal fade" id="editarModal{{ ticket.id }}" tabindex="-1" aria-labelledby="editarModalLabel{{ ticket.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form method="post">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="editarModalLabel{{ ticket.id }}">Editar Ticket #{{ ticket.id }}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                              <div class="mb-2">
+                                <label class="form-label">Comentario</label>
+                                <textarea class="form-control" name="editar_comentario">{{ ticket.comentario }}</textarea>
+                              </div>
+                              <!-- Puedes agregar más campos si lo deseas -->
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                              <button type="submit" name="editar_ticket" class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+                          </form>
+                        </div>
+                      </main>
+                      </div>
+                    </div>
+                    <!-- Modal Eliminar Ticket -->
+                    <div class="modal fade" id="eliminarModal{{ ticket.id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ ticket.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="eliminarModalLabel{{ ticket.id }}">Eliminar Ticket #{{ ticket.id }}</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <p>¿Estás seguro de que deseas eliminar este ticket?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                              <button type="submit" name="eliminar_ticket" class="btn btn-danger">Eliminar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal fade" id="verModal{{ ticket.id }}" tabindex="-1" aria-labelledby="verModalLabel{{ ticket.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="verModalLabel{{ ticket.id }}">Detalle Ticket #{{ ticket.id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <p><strong>Tipo de Soporte:</strong> {{ ticket.tipo_soporte.nombre }}</p>
+                            <p><strong>Comentario:</strong> {{ ticket.comentario }}</p>
+                            <p><strong>Usuario:</strong> {{ ticket.usuario.nombre }}</p>
+                            <p><strong>Área:</strong> {{ ticket.area.nombre }}</p>
+                            <p><strong>Atendido por:</strong> {% if ticket.atendido_por %}{{ ticket.atendido_por.nombre }}{% else %}-{% endif %}</p>
+                            <p><strong>Fecha:</strong> {{ ticket.fecha_creacion|date:'d/m/Y H:i' }}</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% empty %}
+                    <tr><td colspan="8" class="text-center">No hay tickets registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Sidebar toggle logic
+document.addEventListener('DOMContentLoaded', function() {
+  var sidebar = document.getElementById('sidebar');
+  var toggleBtn = document.getElementById('toggleSidebarBtn');
+  var sidebarVisible = window.innerWidth >= 992; // visible en desktop por defecto
+
+  function setSidebarState(visible) {
+    if (visible) {
+      sidebar.style.display = 'block';
+      sidebarVisible = true;
+    } else {
+      sidebar.style.display = 'none';
+      sidebarVisible = false;
+    }
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    setSidebarState(!sidebarVisible);
+  });
+
+  function handleResize() {
+    if(window.innerWidth < 992) {
+      setSidebarState(false);
+    } else {
+      setSidebarState(true);
+    }
+  }
+  window.addEventListener('resize', handleResize);
+  handleResize();
+
+  // Al enviar el formulario de ticket, poner el id del usuario oculto según el nombre seleccionado
+  var usuarioInput = document.getElementById('usuario');
+  var usuarioIdHidden = document.getElementById('usuario_id_hidden');
+  var datalist = document.getElementById('usuarios-list');
+  var ticketForm = document.querySelector('#modalCrearTicket form');
+  if(ticketForm && usuarioInput && usuarioIdHidden && datalist) {
+    ticketForm.addEventListener('submit', function(e) {
+      var nombre = usuarioInput.value;
+      var id = '';
+      for (var i = 0; i < datalist.options.length; i++) {
+        if (datalist.options[i].value === nombre) {
+          id = datalist.options[i].getAttribute('data-id');
+          break;
+        }
+      }
+      usuarioIdHidden.value = id;
+    });
+  }
+});
+</script>
+</body>
+</html>
