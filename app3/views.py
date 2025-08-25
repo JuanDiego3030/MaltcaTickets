@@ -1,4 +1,3 @@
-
 import requests
 import json
 from django.http import JsonResponse, HttpResponse
@@ -55,6 +54,50 @@ def bot(request):
             user_states[chat_id] = {"step": None, "data": {}}
         state = user_states[chat_id]
 
+        # Comando /link: enviar la URL pública de ngrok al usuario
+        if isinstance(text, str) and text.strip().lower() == "/link":
+            try:
+                # Leer la URL pública de ngrok desde la API local
+                ngrok_info = requests.get("http://localhost:4040/api/tunnels").json()
+                tunnels = ngrok_info.get("tunnels", [])
+                url = None
+                for tun in tunnels:
+                    if tun.get("proto") == "https":
+                        url = tun.get("public_url")
+                        break
+                if url:
+                    send_telegram_message(chat_id, f"URL pública de ngrok: {url}")
+                else:
+                    send_telegram_message(chat_id, "No se encontró una URL pública activa de ngrok.")
+            except Exception as e:
+                send_telegram_message(chat_id, f"Error obteniendo la URL de ngrok: {e}")
+            return JsonResponse({"ok": True})
+    if request.method == "GET":
+        ayuda = (
+            "Bot activo.\n"
+            "Comandos disponibles:\n"
+            "/crearticket <tipo_soporte_id> <comentario> <usuario_id> <area_id> [atendido_por_id]\n"
+            "/reporte para ver los tickets existentes"
+        )
+        return HttpResponse(ayuda)
+
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+        except Exception as e:
+            return JsonResponse({"ok": False, "error": f"JSON inválido: {str(e)}"}, status=400)
+
+        message = data.get("message", {})
+        chat_id = message.get("chat", {}).get("id")
+        text = message.get("text", "")
+        response_text = None
+
+        # Inicializar estado si no existe
+        if chat_id not in user_states:
+            user_states[chat_id] = {"step": None, "data": {}}
+        state = user_states[chat_id]
+
         # Comando /start: mostrar lista de comandos disponibles
         if isinstance(text, str) and text.strip().lower() == "/start":
             ayuda = (
@@ -62,7 +105,7 @@ def bot(request):
                 "Comandos disponibles:\n"
                 "/crearticket - Iniciar la creación de un ticket\n"
                 "/reporte - Ver y filtrar tickets existentes\n"
-                "/crear nuevo usuario - Registrar un nuevo usuario\n"
+                "/crearusuario - Registrar un nuevo usuario\n"
                 "\nPuedes usar los comandos en cualquier momento."
             )
             send_telegram_message(chat_id, ayuda)
@@ -237,8 +280,8 @@ def bot(request):
                 send_telegram_message(chat_id, "Por favor selecciona un Área válida.")
             return JsonResponse({"ok": True})
 
-        # Permitir crear usuario desde cualquier parte con /crear nuevo usuario
-        if text.strip().lower().startswith("/crear nuevo usuario"):
+        # Permitir crear usuario desde cualquier parte con /crearusuario
+        if text.strip().lower().startswith("/crearusuario"):
             state["step"] = "nuevo_usuario_nombre"
             send_telegram_message(chat_id, "Vas a crear un nuevo usuario. Escribe el nombre completo:")
             return JsonResponse({"ok": True})
@@ -246,12 +289,9 @@ def bot(request):
         # Selección de usuario o crear nuevo (búsqueda directa por nombre)
         if state["step"] == "usuario":
             usuarios = obtener_usuarios()
-            coincidencias = [u for u in usuarios if text.lower() in u.nombre.lower()]
-            if len(coincidencias) == 0:
-                send_telegram_message(chat_id, "No se encontraron usuarios con ese nombre. Intenta de nuevo o escribe '/crear nuevo usuario' para registrar uno nuevo:")
-                return JsonResponse({"ok": True})
-            elif len(coincidencias) == 1:
-                usuario = coincidencias[0]
+            # Si el texto coincide exactamente con un usuario, lo selecciona directo
+            usuario = next((u for u in usuarios if u.nombre.strip().lower() == text.strip().lower()), None)
+            if usuario:
                 usuario_id = getattr(usuario, 'id', None)
                 state["data"]["usuario_id"] = usuario_id
                 # Paso siguiente: seleccionar soporte
@@ -262,12 +302,28 @@ def bot(request):
                 reply_markup_dict = markup.to_dict() if markup else None
                 send_telegram_message(chat_id, f"Seleccionado: {usuario.nombre}\nSelecciona el usuario que atiende el ticket:", reply_markup=reply_markup_dict)
                 return JsonResponse({"ok": True})
+            # Si no, buscar coincidencias parciales
+            coincidencias = [u for u in usuarios if text.lower() in u.nombre.lower()]
+            if len(coincidencias) == 0:
+                send_telegram_message(chat_id, "No se encontraron usuarios con ese nombre. Intenta de nuevo o escribe '/crearusuario' para registrar uno nuevo:")
+                return JsonResponse({"ok": True})
+            elif len(coincidencias) == 1:
+                usuario = coincidencias[0]
+                usuario_id = getattr(usuario, 'id', None)
+                state["data"]["usuario_id"] = usuario_id
+                soportes = list(Soporte.objects.all())
+                keyboard = [[KeyboardButton(str(s.nombre))] for s in soportes]
+                markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
+                state["step"] = "soporte"
+                reply_markup_dict = markup.to_dict() if markup else None
+                send_telegram_message(chat_id, f"Seleccionado: {usuario.nombre}\nSelecciona el usuario que atiende el ticket:", reply_markup=reply_markup_dict)
+                return JsonResponse({"ok": True})
             elif len(coincidencias) <= 5:
                 keyboard = [[KeyboardButton(str(u.nombre))] for u in coincidencias]
-                keyboard.append([KeyboardButton("/crear nuevo usuario")])
+                keyboard.append([KeyboardButton("/crearusuario")])
                 markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
                 reply_markup_dict = markup.to_dict() if markup else None
-                send_telegram_message(chat_id, "Selecciona el usuario que será atendido, escribe más letras para filtrar, o pulsa '/crear nuevo usuario' para registrar uno nuevo:", reply_markup=reply_markup_dict)
+                send_telegram_message(chat_id, "Selecciona el usuario que será atendido, escribe más letras para filtrar, o pulsa '/crearusuario' para registrar uno nuevo:", reply_markup=reply_markup_dict)
                 return JsonResponse({"ok": True})
             else:
                 send_telegram_message(chat_id, f"Demasiados resultados ({len(coincidencias)}). Escribe más letras del nombre para filtrar:")
@@ -308,13 +364,38 @@ def bot(request):
         # Comentario
         if state["step"] == "comentario":
             state["data"]["comentario"] = text
-            # Crear ticket
+            # Preguntar tipo de problema
+            tipos_falla = ["Usuario", "Sistema", "Hardware"]
+            keyboard = [[KeyboardButton(tipo)] for tipo in tipos_falla]
+            markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
+            state["step"] = "tipo_problema"
+            reply_markup_dict = markup.to_dict() if markup else None
+            send_telegram_message(chat_id, "Selecciona el tipo de falla:", reply_markup=reply_markup_dict)
+            return JsonResponse({"ok": True})
+
+        # Tipo de problema
+        if state["step"] == "tipo_problema":
+            tipo_problema = text.strip().capitalize()
+            if tipo_problema not in ["Usuario", "Sistema", "Hardware"]:
+                send_telegram_message(chat_id, "Por favor selecciona un tipo de falla válido: Usuario, Sistema o Hardware.")
+                return JsonResponse({"ok": True})
+            state["data"]["tipo_problema"] = tipo_problema
+            state["step"] = "solucion"
+            send_telegram_message(chat_id, "Describe la solución (puedes dejarlo vacío si aún no hay solución):")
+            return JsonResponse({"ok": True})
+
+        # Solución
+        if state["step"] == "solucion":
+            state["data"]["solucion"] = text
+            # Crear ticket pasando tipo_problema y solucion directamente
             tipo_soporte_id = state["data"].get("tipo_soporte_id")
             comentario = state["data"].get("comentario")
             usuario_id = state["data"].get("usuario_id")
             area_id = state["data"].get("area_id")
             soporte_id = state["data"].get("soporte_id")
-            ticket = crear_ticket(tipo_soporte_id, comentario, usuario_id, area_id, soporte_id)
+            tipo_problema = state["data"].get("tipo_problema")
+            solucion = state["data"].get("solucion")
+            ticket = crear_ticket(tipo_soporte_id, comentario, usuario_id, area_id, soporte_id, solucion=solucion, tipo_problema=tipo_problema)
             ticket_id = getattr(ticket, "id", None) or getattr(ticket, "pk", None)
             send_telegram_message(chat_id, f"Ticket creado con ID: {ticket_id}")
             # Limpiar estado
@@ -326,5 +407,5 @@ def bot(request):
             "Comando no reconocido.\n"
             "Usa: /crearticket para iniciar el flujo interactivo."
         )
-    send_telegram_message(chat_id, ayuda)
-    return JsonResponse({"ok": True})
+        send_telegram_message(chat_id, ayuda)
+        return JsonResponse({"ok": True})

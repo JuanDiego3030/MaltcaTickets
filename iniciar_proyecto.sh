@@ -38,13 +38,32 @@ if [ -z "$NGROK_URL" ]; then
 fi
 
 WEBHOOK_URL="${NGROK_URL}${WEBHOOK_PATH}"
+
 echo "URL pública de ngrok: $WEBHOOK_URL"
+
+# Actualizar CSRF_TRUSTED_ORIGINS en settings.py con la URL de ngrok
+SETTINGS_PATH="agrotikets/settings.py"
+NGROK_DOMAIN=$(echo $NGROK_URL | sed 's|/$||')
+if grep -q "CSRF_TRUSTED_ORIGINS" "$SETTINGS_PATH"; then
+    sed -i "s|CSRF_TRUSTED_ORIGINS = .*|CSRF_TRUSTED_ORIGINS = [\"$NGROK_DOMAIN\"]|" "$SETTINGS_PATH"
+else
+    echo "\nCSRF_TRUSTED_ORIGINS = [\"$NGROK_DOMAIN\"]" >> "$SETTINGS_PATH"
+fi
+echo "CSRF_TRUSTED_ORIGINS actualizado a: $NGROK_DOMAIN en $SETTINGS_PATH"
 
 # 5. Configurar el webhook de Telegram
 curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" -d "url=${WEBHOOK_URL}"
 echo "Webhook configurado en Telegram."
 
+
 echo "Listo. Puedes ver logs en django.log y ngrok.log."
+
+echo "Cerrando terminal en 10 segundos..."
+for i in {10..1}; do
+    echo -n "$i... "
+    sleep 1
+done
+echo "\nListo."
 
 # pkill -f "manage.py runserver"
 

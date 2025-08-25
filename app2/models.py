@@ -37,6 +37,13 @@ class Ticket(models.Model):
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     atendido_por = models.ForeignKey(Soporte, on_delete=models.SET_NULL, null=True, blank=True, related_name='tickets_atendidos')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    solucion = models.TextField(blank=True, null=True)
+    TIPO_PROBLEMA_CHOICES = [
+        ('usuario', 'Usuario'),
+        ('sistema', 'Sistema'),
+        ('hardware', 'Hardware'),
+    ]
+    tipo_problema = models.CharField(max_length=20, choices=TIPO_PROBLEMA_CHOICES, default='usuario')
 
     def __str__(self):
         return f"Ticket #{self.id} - {self.tipo_soporte.nombre}" # pyright: ignore[reportAttributeAccessIssue]

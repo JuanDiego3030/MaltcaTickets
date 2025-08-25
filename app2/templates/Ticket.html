@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <label for="atendido_por" class="form-label">Atendido por</label>
                       <select class="form-select" name="atendido_por" id="atendido_por" required>
                         <option value="">Seleccione...</option>
@@ -183,9 +183,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         {% endfor %}
                       </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                      <label for="tipo_problema" class="form-label">Tipo de Problema</label>
+                      <select class="form-select" name="tipo_problema" id="tipo_problema" required>
+                        <option value="">Seleccione...</option>
+                        <option value="usuario">Usuario</option>
+                        <option value="sistema">Sistema</option>
+                        <option value="hardware">Hardware</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
                       <label for="comentario" class="form-label">Comentario</label>
                       <textarea class="form-control" name="comentario" id="comentario" rows="2" required></textarea>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-md-12">
+                      <label for="solucion" class="form-label">Solución</label>
+                      <textarea class="form-control" name="solucion" id="solucion" rows="2" placeholder="Describa la solución (opcional)"></textarea>
                     </div>
                   </div>
                 </div>
@@ -325,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <!-- Modal Ver -->
                     <!-- Modal Editar Ticket -->
                     <div class="modal fade" id="editarModal{{ ticket.id }}" tabindex="-1" aria-labelledby="editarModalLabel{{ ticket.id }}" aria-hidden="true">
-                      <div class="modal-dialog">
+                      <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                           <form method="post">
                             {% csrf_token %}
@@ -335,11 +350,65 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="modal-body">
                               <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
-                              <div class="mb-2">
-                                <label class="form-label">Comentario</label>
-                                <textarea class="form-control" name="editar_comentario">{{ ticket.comentario }}</textarea>
+                              <div class="row mb-3">
+                                <div class="col-md-4">
+                                  <label for="editar_tipo_soporte_{{ ticket.id }}" class="form-label">Tipo de Soporte</label>
+                                  <select class="form-select" name="editar_tipo_soporte" id="editar_tipo_soporte_{{ ticket.id }}" required>
+                                    <option value="">Seleccione...</option>
+                                    {% for tipo in tipos_soporte %}
+                                      <option value="{{ tipo.id }}" {% if ticket.tipo_soporte.id == tipo.id %}selected{% endif %}>{{ tipo.nombre }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="editar_usuario_{{ ticket.id }}" class="form-label">Usuario</label>
+                                  <select class="form-select" name="editar_usuario" id="editar_usuario_{{ ticket.id }}" required>
+                                    <option value="">Seleccione...</option>
+                                    {% for u in usuarios %}
+                                      <option value="{{ u.id }}" {% if ticket.usuario.id == u.id %}selected{% endif %}>{{ u.nombre }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="editar_area_{{ ticket.id }}" class="form-label">Área</label>
+                                  <select class="form-select" name="editar_area" id="editar_area_{{ ticket.id }}" required>
+                                    <option value="">Seleccione...</option>
+                                    {% for a in areas %}
+                                      <option value="{{ a.id }}" {% if ticket.area.id == a.id %}selected{% endif %}>{{ a.nombre }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
                               </div>
-                              <!-- Puedes agregar más campos si lo deseas -->
+                              <div class="row mb-3">
+                                <div class="col-md-4">
+                                  <label for="editar_atendido_por_{{ ticket.id }}" class="form-label">Atendido por</label>
+                                  <select class="form-select" name="editar_atendido_por" id="editar_atendido_por_{{ ticket.id }}" required>
+                                    <option value="">Seleccione...</option>
+                                    {% for soporte in usuarios_soporte %}
+                                      <option value="{{ soporte.id }}" {% if ticket.atendido_por and ticket.atendido_por.id == soporte.id %}selected{% endif %}>{{ soporte.nombre }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="editar_tipo_problema_{{ ticket.id }}" class="form-label">Tipo de Problema</label>
+                                  <select class="form-select" name="editar_tipo_problema" id="editar_tipo_problema_{{ ticket.id }}" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="usuario" {% if ticket.tipo_problema == 'usuario' %}selected{% endif %}>Usuario</option>
+                                    <option value="sistema" {% if ticket.tipo_problema == 'sistema' %}selected{% endif %}>Sistema</option>
+                                    <option value="hardware" {% if ticket.tipo_problema == 'hardware' %}selected{% endif %}>Hardware</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="editar_comentario_{{ ticket.id }}" class="form-label">Comentario</label>
+                                  <textarea class="form-control" name="editar_comentario" id="editar_comentario_{{ ticket.id }}" rows="2" required>{{ ticket.comentario }}</textarea>
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-md-12">
+                                  <label for="editar_solucion_{{ ticket.id }}" class="form-label">Solución</label>
+                                  <textarea class="form-control" name="editar_solucion" id="editar_solucion_{{ ticket.id }}" rows="2" placeholder="Describa la solución (opcional)">{{ ticket.solucion }}</textarea>
+                                </div>
+                              </div>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -347,7 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                           </form>
                         </div>
-                      </main>
                       </div>
                     </div>
                     <!-- Modal Eliminar Ticket -->
@@ -385,6 +453,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p><strong>Usuario:</strong> {{ ticket.usuario.nombre }}</p>
                             <p><strong>Área:</strong> {{ ticket.area.nombre }}</p>
                             <p><strong>Atendido por:</strong> {% if ticket.atendido_por %}{{ ticket.atendido_por.nombre }}{% else %}-{% endif %}</p>
+                            <p><strong>Tipo de Problema:</strong> {{ ticket.tipo_problema|title }}</p>
+                            <p><strong>Solución:</strong> {{ ticket.solucion|default:'-' }}</p>
                             <p><strong>Fecha:</strong> {{ ticket.fecha_creacion|date:'d/m/Y H:i' }}</p>
                           </div>
                           <div class="modal-footer">
@@ -400,6 +470,28 @@ document.addEventListener('DOMContentLoaded', function() {
             </table>
         </div>
     </div>
+      <style>
+      /* Ajuste para que los modales siempre estén por encima de la navbar */
+      .modal-backdrop.show {
+        z-index: 2000 !important;
+      }
+      .navbar {
+        z-index: 2101 !important;
+        position: relative;
+      }
+      .modal {
+        z-index: 2100 !important;
+      }
+      /* Ajuste para que los modales no tapen la navbar */
+      .modal-dialog {
+        margin-top: 80px !important;
+      }
+      @media (max-width: 991.98px) {
+        .modal-dialog {
+          margin-top: 60px !important;
+        }
+      }
+    </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

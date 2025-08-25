@@ -1,17 +1,501 @@
 Watching for file changes with StatReloader
-[20/Aug/2025 17:35:09] "GET /panel/control/ HTTP/1.1" 200 17425
+/home/juan/Escritorio/Maltcatikets/agrotikets/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 13:01:59
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+[25/Aug/2025 13:02:14] "POST /bot/ HTTP/1.1" 200 12
+[25/Aug/2025 13:02:14] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:02:27] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:02:28] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:02:28] "GET /static/images/logo.png HTTP/1.1" 200 113860
+[25/Aug/2025 13:02:36] "GET /static/images/favicon.png HTTP/1.1" 200 253443
+[25/Aug/2025 13:03:25] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:03:27] "GET /static/images/favicon.png HTTP/1.1" 200 253443
+[25/Aug/2025 13:05:42] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:05:42] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:05:42] "GET /static/images/logo.png HTTP/1.1" 200 113860
+[25/Aug/2025 13:05:44] "GET /static/images/favicon.png HTTP/1.1" 200 253443
+[25/Aug/2025 13:06:09] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 13:06:09] "GET /panel/control/ HTTP/1.1" 200 17737
+[25/Aug/2025 13:06:10] "GET /static/css/paneles-style.css HTTP/1.1" 200 7518
+[25/Aug/2025 13:06:10] "GET /static/images/agroticket.png HTTP/1.1" 200 56297
+[25/Aug/2025 13:06:14] "GET /panel/control/ HTTP/1.1" 302 0
+[25/Aug/2025 13:06:15] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:06:15] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:06:15] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:06:16] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:06:16] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:09:37] "GET /panel/control/ HTTP/1.1" 200 17737
+[25/Aug/2025 13:09:44] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:09:44] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:09:44] "GET /static/images/logo.png HTTP/1.1" 200 113860
+[25/Aug/2025 13:09:45] "GET /static/images/favicon.png HTTP/1.1" 200 253443
+[25/Aug/2025 13:10:04] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 13:10:04] "GET /panel/control/ HTTP/1.1" 200 17737
+[25/Aug/2025 13:10:05] "GET /static/images/agroticket.png HTTP/1.1" 200 56297
+[25/Aug/2025 13:10:05] "GET /static/css/paneles-style.css HTTP/1.1" 200 7518
+[25/Aug/2025 13:11:54] "GET /tickets/crear_ticket/ HTTP/1.1" 200 546528
+[25/Aug/2025 13:12:07] "GET /tickets/crear_ticket/?usuario=3&tipo_soporte=&fecha_inicio=&fecha_fin= HTTP/1.1" 200 178451
+[25/Aug/2025 13:12:37] "GET /tickets/crear_ticket/?usuario=&tipo_soporte=&fecha_inicio=&fecha_fin= HTTP/1.1" 200 546528
+[25/Aug/2025 13:13:11] "POST /tickets/crear_ticket/?usuario=&tipo_soporte=&fecha_inicio=&fecha_fin= HTTP/1.1" 302 0
+[25/Aug/2025 13:13:12] "GET /tickets/crear_ticket/ HTTP/1.1" 200 551423
+[25/Aug/2025 13:13:38] "POST /tickets/crear_ticket/ HTTP/1.1" 302 0
+[25/Aug/2025 13:13:39] "GET /tickets/crear_ticket/ HTTP/1.1" 200 556618
+[25/Aug/2025 13:14:15] "POST /tickets/crear_ticket/ HTTP/1.1" 200 556618
+[25/Aug/2025 13:15:58] "POST /tickets/crear_ticket/ HTTP/1.1" 302 0
+[25/Aug/2025 13:15:59] "GET /tickets/crear_ticket/ HTTP/1.1" 200 569480
+[25/Aug/2025 13:17:36] "POST /tickets/crear_ticket/ HTTP/1.1" 302 0
+[25/Aug/2025 13:17:37] "GET /tickets/crear_ticket/?abrir_modal_ticket=1 HTTP/1.1" 200 574835
+[25/Aug/2025 13:18:17] "POST /tickets/crear_ticket/?abrir_modal_ticket=1 HTTP/1.1" 302 0
+[25/Aug/2025 13:18:18] "GET /tickets/crear_ticket/ HTTP/1.1" 200 579457
+[25/Aug/2025 13:19:45] "POST /tickets/crear_ticket/ HTTP/1.1" 302 0
+[25/Aug/2025 13:19:45] "GET /tickets/crear_ticket/ HTTP/1.1" 200 592696
+[25/Aug/2025 13:22:11] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:22:11] "GET /static/css/login-styles.css HTTP/1.1" 200 10099
+[25/Aug/2025 13:22:11] "GET /static/images/logo.png HTTP/1.1" 200 113860
+[25/Aug/2025 13:22:21] "GET /static/images/favicon.png HTTP/1.1" 200 253443
+[25/Aug/2025 13:22:40] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 13:22:40] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 13:22:40] "GET /static/images/agroticket.png HTTP/1.1" 200 56297
+[25/Aug/2025 13:22:40] "GET /static/css/paneles-style.css HTTP/1.1" 200 7518
+[25/Aug/2025 13:22:43] "GET /tickets/crear_ticket/ HTTP/1.1" 200 592696
+[25/Aug/2025 13:22:54] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 13:23:10] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 13:23:10] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 13:23:11] "GET /static/images/agroticket.png HTTP/1.1" 200 56297
+[25/Aug/2025 13:23:11] "GET /static/css/paneles-style.css HTTP/1.1" 200 7518
+[25/Aug/2025 13:23:19] "GET /tickets/crear_ticket/ HTTP/1.1" 200 592696
+[25/Aug/2025 13:24:31] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 13:32:43] "GET /tickets/crear_ticket/ HTTP/1.1" 200 592696
+[25/Aug/2025 13:50:48] "GET /tickets/crear_ticket/ HTTP/1.1" 302 0
+[25/Aug/2025 13:50:48] "GET / HTTP/1.1" 200 3843
+[25/Aug/2025 13:50:48] "GET /static/css/login-styles.css HTTP/1.1" 304 0
+[25/Aug/2025 13:50:57] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 13:50:57] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 13:50:57] "GET /static/css/paneles-style.css HTTP/1.1" 304 0
+[25/Aug/2025 13:50:57] "GET /static/images/agroticket.png HTTP/1.1" 304 0
+[25/Aug/2025 13:51:01] "GET /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 13:51:41] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 16:00:03] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 16:00:03] "GET /static/images/favicon.png HTTP/1.1" 304 0
 /home/juan/Escritorio/Maltcatikets/app1/views.py:18: UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
   fig, ax = plt.subplots(figsize=(2.2,2.2))  # Más pequeño y cuadrado
 /home/juan/Escritorio/Maltcatikets/app1/views.py:26: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all Axes decorations.
   plt.tight_layout()
-[20/Aug/2025 17:35:16] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 200 23601
-[20/Aug/2025 17:35:25] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 200 23598
-[20/Aug/2025 17:35:27] "GET /tickets/crear_ticket/ HTTP/1.1" 200 287963
-[20/Aug/2025 17:35:28] "GET /panel/control/ HTTP/1.1" 200 17425
-[20/Aug/2025 17:35:29] "GET /panel/control/ HTTP/1.1" 200 17425
-[20/Aug/2025 19:30:53] "GET /panel/control/ HTTP/1.1" 200 17425
-[20/Aug/2025 19:30:53] "GET /static/images/agroticket.png HTTP/1.1" 304 0
-[20/Aug/2025 19:30:53] "GET /static/images/favicon.png HTTP/1.1" 304 0
-[20/Aug/2025 19:31:28] "GET /tickets/crear_ticket/ HTTP/1.1" 200 287963
-[20/Aug/2025 19:31:29] "GET /panel/control/ HTTP/1.1" 200 17425
-[20/Aug/2025 19:31:30] "GET /tickets/crear_ticket/ HTTP/1.1" 200 287963
+[25/Aug/2025 16:14:18] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 200 26739
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 13:02:04
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:20:53
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+[25/Aug/2025 16:21:13] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 16:21:16] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 200 28004
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-21 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-25 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 16:24:39] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-21&fecha_fin=2025-08-25 HTTP/1.1" 200 19158
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-19 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-26 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 16:25:46] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 28021
+[25/Aug/2025 16:27:53] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 31289
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:21:01
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:34:32
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-19 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-26 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 16:34:57] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 31935
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:34:40
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:41:05
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:41:12
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-19 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-26 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 16:42:50] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 37430
+[25/Aug/2025 16:46:13] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 37429
+[25/Aug/2025 16:48:20] "GET /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 16:48:34] "POST /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 16:48:57] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 16:49:08] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 200 37414
+Internal Server Error: /exportar-reporte-pdf/
+Traceback (most recent call last):
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Maltcatikets/app1/views.py", line 140, in exportar_reporte_pdf
+    html_string = render_to_string('reporte_pdf.html', {
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 861, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 705, in __init__
+    filter_func = parser.find_filter(filter_name)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 615, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'zip'
+[25/Aug/2025 16:51:19] "GET /exportar-reporte-pdf/?fecha_inicio=&fecha_fin= HTTP/1.1" 500 225241
+Not Found: /favicon.ico
+[25/Aug/2025 16:51:20] "GET /favicon.ico HTTP/1.1" 404 3415
+Internal Server Error: /exportar-reporte-pdf/
+Traceback (most recent call last):
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Maltcatikets/app1/views.py", line 140, in exportar_reporte_pdf
+    html_string = render_to_string('reporte_pdf.html', {
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 861, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 705, in __init__
+    filter_func = parser.find_filter(filter_name)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 615, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'zip'
+[25/Aug/2025 16:51:30] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 500 225465
+Internal Server Error: /exportar-reporte-pdf/
+Traceback (most recent call last):
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Maltcatikets/app1/views.py", line 140, in exportar_reporte_pdf
+    html_string = render_to_string('reporte_pdf.html', {
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 1540, in do_with
+    nodelist = parser.parse(("endwith",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 861, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 710, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '[idx].fallas' from 'area_fallas[idx].fallas'
+[25/Aug/2025 16:52:16] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 500 268887
+Internal Server Error: /exportar-reporte-pdf/
+Traceback (most recent call last):
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Maltcatikets/app1/views.py", line 140, in exportar_reporte_pdf
+    html_string = render_to_string('reporte_pdf.html', {
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 1540, in do_with
+    nodelist = parser.parse(("endwith",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 861, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/template/base.py", line 710, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '[idx].fallas' from 'area_fallas[idx].fallas'
+[25/Aug/2025 16:52:20] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 500 268750
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:41:56
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Maltcatikets/app1/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 25, 2025 - 16:52:51
+Django version 5.2.5, using settings 'agrotikets.settings'
+Starting development server at http://0.0.0.0:7000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-19 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-26 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 16:53:19] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-19&fecha_fin=2025-08-26 HTTP/1.1" 200 33543
+[25/Aug/2025 17:44:14] "GET / HTTP/1.1" 200 3597
+[25/Aug/2025 17:44:35] "POST / HTTP/1.1" 302 0
+[25/Aug/2025 17:44:35] "GET /panel/control/ HTTP/1.1" 200 19059
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-20 00:00:00) while time zone support is active.
+  warnings.warn(
+/home/juan/Escritorio/Agrotikets/venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1671: RuntimeWarning: DateTimeField Ticket.fecha_creacion received a naive datetime (2025-08-25 00:00:00) while time zone support is active.
+  warnings.warn(
+[25/Aug/2025 17:45:20] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-20&fecha_fin=2025-08-25 HTTP/1.1" 200 32953
+[25/Aug/2025 17:46:10] "GET /exportar-reporte-pdf/?fecha_inicio=2025-08-20&fecha_fin=2025-08-26 HTTP/1.1" 200 33540
+[25/Aug/2025 18:59:16] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 19:39:00] "GET /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 19:39:01] "GET /panel/control/ HTTP/1.1" 200 19059
+[25/Aug/2025 19:39:02] "GET /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 19:39:03] "GET /tickets/crear_ticket/ HTTP/1.1" 200 593260
+[25/Aug/2025 19:39:05] "GET /panel/control/ HTTP/1.1" 200 19059

@@ -42,15 +42,45 @@ def exportar_reporte_pdf(request):
         fecha_inicio_dt = fecha_fin_dt = None
 
 
+
     tickets = Ticket.objects.all()
     if fecha_inicio_dt:
         tickets = tickets.filter(fecha_creacion__gte=fecha_inicio_dt)
     if fecha_fin_dt:
         tickets = tickets.filter(fecha_creacion__lte=fecha_fin_dt)
 
+    tickets_reporte = tickets.order_by('-fecha_creacion')
+    # Calcular estadísticas de tipo de problema (falla)
+    TIPO_PROBLEMA_CHOICES = dict(Ticket.TIPO_PROBLEMA_CHOICES)
+    causas = list(TIPO_PROBLEMA_CHOICES.values())
+    causas_falla_stats = []
+    total_tickets_causa = tickets.count()
+    from collections import Counter, defaultdict
+    causas_counter = Counter()
+    for t in tickets:
+        causa = TIPO_PROBLEMA_CHOICES.get(t.tipo_problema, 'Sin especificar')
+        causas_counter[causa] += 1
+    for causa in causas:
+        cantidad = causas_counter.get(causa, 0)
+        porcentaje = (cantidad/total_tickets_causa*100) if total_tickets_causa else 0
+        causas_falla_stats.append((causa, cantidad, porcentaje))
+    causas_falla_stats.sort(key=lambda x: x[2], reverse=True)
+
+    areas = Area.objects.all()
+    # Porcentaje de tipo de falla por área
+    area_fallas = []
+    for a in areas:
+        area_tickets = tickets.filter(area=a)
+        total_area = area_tickets.count()
+        fallas_area = []
+        for key, label in TIPO_PROBLEMA_CHOICES.items():
+            cantidad = area_tickets.filter(tipo_problema=key).count()
+            porcentaje = (cantidad/total_area*100) if total_area else 0
+            fallas_area.append({'tipo': label, 'cantidad': cantidad, 'porcentaje': porcentaje})
+        fallas_area.sort(key=lambda x: x['porcentaje'], reverse=True)
+        area_fallas.append({'area': a.nombre, 'fallas': fallas_area, 'total': total_area})
     total_tickets = tickets.count()
 
-    # Calcular soportes_stats aquí, después de tickets
     soportes = Soporte.objects.all()
     soportes_stats = []
     total_tickets_atendidos = tickets.exclude(atendido_por=None).count()
@@ -58,6 +88,7 @@ def exportar_reporte_pdf(request):
         cantidad = tickets.filter(atendido_por=s).count()
         porcentaje = (cantidad/total_tickets_atendidos*100) if total_tickets_atendidos else 0
         soportes_stats.append((s.nombre, cantidad, porcentaje))
+    soportes_stats.sort(key=lambda x: x[2], reverse=True)
 
     usuarios = Usuario.objects.all()
     areas = Area.objects.all()
@@ -68,41 +99,27 @@ def exportar_reporte_pdf(request):
         cantidad = tickets.filter(usuario=u).count()
         porcentaje = (cantidad/total_tickets*100) if total_tickets else 0
         usuarios_stats.append((u.nombre, cantidad, porcentaje))
+    usuarios_stats.sort(key=lambda x: x[2], reverse=True)
 
     areas_stats = []
     for a in areas:
         cantidad = tickets.filter(area=a).count()
         porcentaje = (cantidad/total_tickets*100) if total_tickets else 0
         areas_stats.append((a.nombre, cantidad, porcentaje))
+    areas_stats.sort(key=lambda x: x[2], reverse=True)
 
     tipos_stats = []
     for t in tipos_soporte:
         cantidad = tickets.filter(tipo_soporte=t).count()
         porcentaje = (cantidad/total_tickets*100) if total_tickets else 0
         tipos_stats.append((t.nombre, cantidad, porcentaje))
-
-    tabla_usuario_tipo = []
-    for u in usuarios:
-        fila = {
-            'usuario': u.nombre,
-            'tipos': [],
-            'total': 0
-        }
-        total_usuario = 0
-        for t in tipos_soporte:
-            cantidad = tickets.filter(usuario=u, tipo_soporte=t).count()
-            fila['tipos'].append(cantidad)
-            total_usuario += cantidad
-        fila['total'] = total_usuario
-        tabla_usuario_tipo.append(fila)
+    tipos_stats.sort(key=lambda x: x[2], reverse=True)
 
     resumen_areas = []
     for a in areas:
         cantidad = tickets.filter(area=a).count()
         porcentaje = (cantidad/total_tickets*100) if total_tickets else 0
         tipos_area = []
-        tipos_labels_area = []
-        tipos_cantidades_area = []
         for t in tipos_soporte:
             cantidad_tipo = tickets.filter(area=a, tipo_soporte=t).count()
             porcentaje_tipo = (cantidad_tipo/cantidad*100) if cantidad else 0
@@ -111,33 +128,24 @@ def exportar_reporte_pdf(request):
                 'cantidad': cantidad_tipo,
                 'porcentaje': porcentaje_tipo
             })
-            tipos_labels_area.append(t.nombre)
-            tipos_cantidades_area.append(cantidad_tipo)
-        if cantidad == 0:
-            grafico = pie_chart(['Sin tickets este mes'], [1], colors=['#dc3545'], empty=True)
-        else:
-            grafico = pie_chart(tipos_labels_area, tipos_cantidades_area, palette)
+        tipos_area.sort(key=lambda x: x['porcentaje'], reverse=True)
+        # Fallas por área
+        area_tickets = tickets.filter(area=a)
+        total_area = area_tickets.count()
+        fallas_area = []
+        for key, label in TIPO_PROBLEMA_CHOICES.items():
+            cantidad_falla = area_tickets.filter(tipo_problema=key).count()
+            porcentaje_falla = (cantidad_falla/total_area*100) if total_area else 0
+            fallas_area.append({'tipo': label, 'cantidad': cantidad_falla, 'porcentaje': porcentaje_falla})
+        fallas_area.sort(key=lambda x: x['porcentaje'], reverse=True)
         resumen_areas.append({
             'nombre': a.nombre,
             'cantidad': cantidad,
             'porcentaje': porcentaje,
-            'grafico': grafico,
             'tipos': tipos_area,
-            'sin_tickets': cantidad == 0
+            'sin_tickets': cantidad == 0,
+            'fallas': fallas_area
         })
-
-    # Gráficos generales
-    usuarios_labels = [u[0] for u in usuarios_stats]
-    usuarios_cantidades = [u[1] for u in usuarios_stats]
-    grafico_usuarios = pie_chart(usuarios_labels, usuarios_cantidades, palette, empty=(sum(usuarios_cantidades) == 0))
-
-    areas_labels = [a[0] for a in areas_stats]
-    areas_cantidades = [a[1] for a in areas_stats]
-    grafico_areas = pie_chart(areas_labels, areas_cantidades, palette, empty=(sum(areas_cantidades) == 0))
-
-    tipos_labels = [t[0] for t in tipos_stats]
-    tipos_cantidades = [t[1] for t in tipos_stats]
-    grafico_tipos = pie_chart(tipos_labels, tipos_cantidades, palette, empty=(sum(tipos_cantidades) == 0))
 
     html_string = render_to_string('reporte_pdf.html', {
         'fecha_inicio': fecha_inicio,
@@ -146,12 +154,11 @@ def exportar_reporte_pdf(request):
         'usuarios_stats': usuarios_stats,
         'areas_stats': areas_stats,
         'tipos_stats': tipos_stats,
-        'tabla_usuario_tipo': tabla_usuario_tipo,
         'resumen_areas': resumen_areas,
-        'grafico_usuarios': grafico_usuarios,
-        'grafico_areas': grafico_areas,
-        'grafico_tipos': grafico_tipos,
         'soportes_stats': soportes_stats,
+        'tickets_reporte': tickets_reporte,
+        'causas_falla_stats': causas_falla_stats,
+        'TIPO_PROBLEMA_CHOICES': TIPO_PROBLEMA_CHOICES,
     })
     html = HTML(string=html_string)
     pdf = html.write_pdf()

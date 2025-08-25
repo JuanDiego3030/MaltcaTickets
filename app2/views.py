@@ -7,6 +7,32 @@ from app1.models import User
 from app2.crud import crear_ticket as crear_ticket_crud, obtener_tickets
 
 def crear_ticket(request):
+    # Editar ticket
+    if request.method == 'POST' and 'editar_ticket' in request.POST:
+        ticket_id = request.POST.get('ticket_id')
+        tipo_soporte_id = request.POST.get('editar_tipo_soporte')
+        comentario = request.POST.get('editar_comentario')
+        usuario_id = request.POST.get('editar_usuario')
+        area_id = request.POST.get('editar_area')
+        atendido_por_id = request.POST.get('editar_atendido_por')
+        solucion = request.POST.get('editar_solucion')
+        tipo_problema = request.POST.get('editar_tipo_problema')
+        if ticket_id and tipo_soporte_id and comentario and usuario_id and area_id and atendido_por_id and tipo_problema:
+            from app2.crud import actualizar_ticket
+            actualizar_ticket(
+                ticket_id=ticket_id,
+                tipo_soporte_id=tipo_soporte_id,
+                comentario=comentario,
+                usuario_id=usuario_id,
+                area_id=area_id,
+                atendido_por_id=atendido_por_id,
+                solucion=solucion,
+                tipo_problema=tipo_problema
+            )
+            messages.success(request, 'Ticket modificado exitosamente')
+            return redirect('crear_ticket')
+        else:
+            messages.error(request, 'Todos los campos son obligatorios para editar el ticket')
     user_id = request.session.get('user_id')
     if not user_id:
         messages.error(request, 'Debe iniciar sesión primero')
@@ -55,18 +81,22 @@ def crear_ticket(request):
         usuario_id = request.POST.get('usuario')
         area_id = request.POST.get('area')
         atendido_por_id = request.POST.get('atendido_por')
-        if tipo_soporte_id and comentario and usuario_id and area_id and atendido_por_id:
+        solucion = request.POST.get('solucion')
+        tipo_problema = request.POST.get('tipo_problema')
+        if tipo_soporte_id and comentario and usuario_id and area_id and atendido_por_id and tipo_problema:
             ticket = crear_ticket_crud(
                 tipo_soporte_id=tipo_soporte_id,
                 comentario=comentario,
                 usuario_id=usuario_id,
                 area_id=area_id,
-                atendido_por_id=atendido_por_id
+                atendido_por_id=atendido_por_id,
+                solucion=solucion,
+                tipo_problema=tipo_problema
             )
             messages.success(request, 'Ticket creado exitosamente')
             return redirect('crear_ticket')
         else:
-            messages.error(request, 'Todos los campos son obligatorios')
+            messages.error(request, 'Todos los campos son obligatorios (incluyendo tipo de problema)')
 
     tipos_soporte = TipoSoporte.objects.all()
     usuarios = Usuario.objects.all()
